@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>菁華工程有限公司 | 專業金屬與玻璃工程方案</title>
+    <style>
+        /* 基礎設定 */
+        :root {
+            --primary-color: #27ae60; 
+            --text-dark: #333333;
+            --text-light: #666666;
+            --bg-light: #f9f9f9;
+        }
+        
+        /* 加入平滑捲動效果 */
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Noto Sans HK', 'Microsoft JhengHei', sans-serif;
+            margin: 0;
+            padding: 0;
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+        a { text-decoration: none; color: inherit; }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* 解決 Header 遮擋錨點標題的問題 */
+        section[id] { scroll-margin-top: 80px; }
+
+        /* 導覽列 */
+        header {
+            background: #fff;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo { font-size: 24px; font-weight: bold; color: var(--primary-color); }
+        .nav-links a { margin: 0 15px; font-weight: 500; transition: color 0.3s; }
+        .nav-links a:hover { color: var(--primary-color); }
+        
+        /* 按鈕群組 */
+        .header-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 4px;
+            font-weight: bold;
+            display: inline-flex;
+            justify-content: center;
+            border: none;
+            cursor: pointer;
+            transition: background 0.3s;
+            box-sizing: border-box;
+        }
+        .btn-primary:hover { background-color: #1e8449; }
+        
+        /* WhatsApp 按鈕 */
+        .btn-whatsapp {
+            background-color: #25D366;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 4px;
+            font-weight: bold;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: background 0.3s;
+            box-sizing: border-box;
+        }
+        .btn-whatsapp:hover { background-color: #128C7E; }
+
+        /* 首頁大圖 (Hero Section) */
+        .hero {
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1920&q=80') center/cover;
+            color: #fff;
+            text-align: center;
+            padding: 120px 20px;
+        }
+        .hero h1 { font-size: 48px; margin-bottom: 20px; }
+        .hero p { font-size: 20px; margin-bottom: 30px; max-width: 800px; margin-left: auto; margin-right: auto; }
+        .tags { margin-bottom: 40px; }
+        .tags span {
+            background: rgba(255,255,255,0.2);
+            padding: 5px 15px;
+            border-radius: 20px;
+            margin: 0 5px;
+            font-size: 14px;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+
+        /* 服務對象 (B2B Partners) */
+        .section-title { text-align: center; font-size: 32px; margin: 60px 0 40px; }
+        .partners-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+        .partner-card {
+            background: var(--bg-light);
+            padding: 30px;
+            border-radius: 8px;
+            text-align: center;
+            border-top: 4px solid var(--primary-color);
+            transition: transform 0.3s;
+        }
+        .partner-card:hover { transform: translateY(-5px); }
+        .icon { font-size: 40px; margin-bottom: 15px; }
+
+        /* 專業實績 (Portfolio) */
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+        .portfolio-card {
+            background: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+        .portfolio-img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+        }
+        .portfolio-content { padding: 20px; }
+        .portfolio-content h3 { margin-top: 0; color: var(--primary-color); font-size: 18px; }
+        .portfolio-content p { color: var(--text-light); font-size: 14px; margin-bottom: 0; }
+
+        /* 業務範疇區塊 (Service Scope) */
+        .scope-subtitle { text-align: center; color: var(--primary-color); font-weight: bold; margin-bottom: -30px; font-size: 14px; }
+        .scope-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-bottom: 60px;
+        }
+        .scope-item {
+            position: relative;
+            height: 240px;
+            border: 1px solid #ddd;
+            overflow: hidden;
+        }
+        .scope-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s;
+        }
+        .scope-item:hover img {
+            transform: scale(1.05);
+        }
+        .scope-label {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            display: flex;
+            justify-content: space-between;
+            align-items: stretch;
+            border-top: 1px solid #eee;
+        }
+        .scope-label .title {
+            font-weight: bold;
+            font-size: 15px;
+            color: #000;
+            padding: 10px 15px;
+            display: flex;
+            align-items: center;
+        }
+        .scope-label .detail-btn {
+            background-color: #4b5a6c;
+            color: #fff;
+            padding: 0 15px;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+        }
+        .scope-label .detail-btn:hover { background-color: #384351; }
+
+        @media (max-width: 900px) { .scope-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 500px) { .scope-grid { grid-template-columns: 1fr; } }
+
+        /* 資質背書 (Trust & Authority) */
+        .trust-section { background: var(--bg-light); padding: 60px 0; }
+        .trust-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            text-align: center;
+        }
+
+        /* B2B 聯絡表單 */
+        .contact-section { padding: 60px 0; max-width: 800px; margin: 0 auto; }
+        .form-row { display: flex; gap: 20px; }
+        .form-group { margin-bottom: 20px; flex: 1; }
+        .form-group label { display: block; margin-bottom: 8px; font-weight: bold; }
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-family: inherit;
+            box-sizing: border-box;
+        }
+        
+        /* 頁尾 */
+        footer { background: #222; color: #aaa; text-align: center; padding: 30px 0; font-size: 14px; }
+
+        /* =========================================
+           手機版響應式設計 (Mobile Responsive)
+           ========================================= */
+        @media (max-width: 768px) {
+            /* Header 與按鈕 */
+            .header-content { flex-direction: column; gap: 15px; }
+            .nav-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-bottom: 5px; }
+            .nav-links a { margin: 0 5px; }
+            .header-actions { flex-direction: column; width: 100%; gap: 10px; }
+            .btn-whatsapp, .btn-primary { width: 100%; font-size: 16px; }
+            
+            /* 橫幅 */
+            .hero { padding: 60px 20px; }
+            .hero h1 { font-size: 32px; }
+            .hero p { font-size: 16px; }
+
+            /* 表單排版 */
+            .form-row { flex-direction: column; gap: 0; }
+            .contact-section { padding: 40px 20px; }
+
+            /* 網格保護 */
+            .portfolio-grid, .partners-grid, .trust-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body id="top">
+
+    <header>
+        <div class="container header-content">
+            <div class="logo">菁華工程 CHING WAH</div>
+            <div class="nav-links">
+                <a href="#top">首頁</a>
+                <a href="#portfolio">焦點項目</a>
+                <a href="#scope">業務範疇</a>
+                <a href="projects.html">過往項目</a> 
+            </div>
+            <div class="header-actions">
+                <a href="#" class="btn-whatsapp" target="_blank">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                        <path d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326zM7.994 14.521a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592zm3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.729.729 0 0 0-.529.247c-.182.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z"/>
+                    </svg>
+                    WhatsApp 查詢
+                </a>
+                <a href="#contact" class="btn-primary">立即獲取報價</a>
+            </div>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <h1>40年香港專業工程經驗</h1>
+            <p>為室內設計公司、建築裝修及物業管理，提供一站式金屬、鋁窗與隔音玻璃解決方案。</p>
+            <div class="tags">
+                <span>#註冊小型工程承建商</span>
+                <span>#隔音玻璃間隔</span>
+                <span>#不鏽鋼暗藏件</span>
+                <span>#CAD圖紙支援</span>
+            </div>
+            <a href="#portfolio" class="btn-primary" style="font-size: 18px; padding: 15px 40px;">查看專業實績</a>
+        </div>
+    </section>
+
+    <section class="container">
+        <h2 class="section-title">我們為誰提供專業支援？</h2>
+        <div class="partners-grid">
+            <div class="partner-card">
+                <div class="icon">📐</div>
+                <h3>室內設計公司</h3>
+                <p>致力配合設計師的構思，提供實用且美觀的金屬與玻璃工程方案，專注於現場的妥善安裝與收口細節。</p>
+            </div>
+            <div class="partner-card">
+                <div class="icon">🏢</div>
+                <h3>建築師事務所 (則樓)</h3>
+                <p>嚴格按照圖紙規範施工，提供符合屋宇署要求及小型工程申報 (MWIS) 的標準安裝與施工配合。</p>
+            </div>
+            <div class="partner-card">
+                <div class="icon">🏗️</div>
+                <h3>建築及裝修公司</h3>
+                <p>與信賴的加工廠房建立多年深厚合作關係，確保材料品質穩定。我們專注於現場靈活調配與精準安裝，解決複雜收口難題。</p>
+            </div>
+            <div class="partner-card">
+                <div class="icon">🔑</div>
+                <h3>物業管理公司</h3>
+                <p>提供屋苑、商廈及商場的各項金屬與玻璃設施的維護及更新服務，按時保質完成各類日常與緊急工程。</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="container" id="portfolio">
+        <h2 class="section-title">近期商業與辦公室項目</h2>
+        <div class="portfolio-grid">
+            <div class="portfolio-card">
+                <img src="https://images.unsplash.com/photo-1600607686527-6fb886090705?auto=format&fit=crop&w=800&q=80" alt="隔音玻璃間隔" class="portfolio-img">
+                <div class="portfolio-content">
+                    <h3>甲級寫字樓隔音間隔工程</h3>
+                    <p><strong>地點：</strong> 中環某外資銀行辦公室<br>
+                    <strong>項目：</strong> 採用雙層隔音夾膠玻璃配合極幼不鏽鋼黑框，達到指定聲學測試標準。</p>
+                </div>
+            </div>
+            <div class="portfolio-card">
+                <img src="https://images.unsplash.com/photo-1582282577215-64bc61c1a93b?auto=format&fit=crop&w=800&q=80" alt="商業連鎖店" class="portfolio-img">
+                <div class="portfolio-content">
+                    <h3>零售旗艦店金屬外牆與趟門</h3>
+                    <p><strong>地點：</strong> 尖沙咀大型商場<br>
+                    <strong>項目：</strong> 定制巨型無軌不鏽鋼趟門及飾面，高度還原設計師的無縫視覺要求。</p>
+                </div>
+            </div>
+            <div class="portfolio-card">
+                <img src="https://images.unsplash.com/photo-1504307651254-35680f356fce?auto=format&fit=crop&w=800&q=80" alt="大堂裝飾" class="portfolio-img">
+                <div class="portfolio-content">
+                    <h3>高級住宅會所金屬構件</h3>
+                    <p><strong>地點：</strong> 何文田新建住宅<br>
+                    <strong>項目：</strong> 大堂不鏽鋼天花飾條及戶外防風玻璃欄河，代辦相關小型工程入則。</p>
+                </div>
+            </div>
+        </div>
+        <div style="text-align: center; margin-bottom: 60px;">
+            <a href="projects.html" class="btn-primary" style="background: #fff; color: var(--primary-color); border: 2px solid var(--primary-color);">瀏覽更多工程案例</a>
+        </div>
+    </section>
+
+    <section class="container" id="scope" style="padding-top: 20px;">
+        <p class="scope-subtitle">Our completed Project</p>
+        <h2 class="section-title">業務範疇</h2>
+        <div class="scope-grid">
+            <div class="scope-item">
+                <img src="https://images.unsplash.com/photo-1505330622279-bf7d7fc918f4?auto=format&fit=crop&w=600&q=80" alt="隔音玻璃門">
+                <div class="scope-label">
+                    <span class="title">隔音玻璃門</span>
+                    <a href="projects.html#soundproof-doors" class="detail-btn">細節 →</a>
+                </div>
+            </div>
+            <div class="scope-item">
+                <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=600&q=80" alt="趟摺門及趟門">
+                <div class="scope-label">
+                    <span class="title">趟摺門及趟門</span>
+                    <a href="projects.html#sliding-doors" class="detail-btn">細節 →</a>
+                </div>
+            </div>
+            <div class="scope-item">
+                <img src="https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=600&q=80" alt="玻璃攔河">
+                <div class="scope-label">
+                    <span class="title">玻璃攔河</span>
+                    <a href="projects.html#glass-balustrade" class="detail-btn">細節 →</a>
+                </div>
+            </div>
+            <div class="scope-item">
+                <img src="https://images.unsplash.com/photo-1503708928676-1cb796a0891e?auto=format&fit=crop&w=600&q=80" alt="鋁窗、包鋁板及巴士門">
+                <div class="scope-label">
+                    <span class="title" style="font-size: 13px;">鋁窗、包鋁板及巴士門</span>
+                    <a href="projects.html#aluminum-windows" class="detail-btn">細節 →</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="trust-section">
+        <div class="container">
+            <h2 class="section-title" style="margin-top: 0;">專業資質與信心保證</h2>
+            <div class="trust-grid">
+                <div>
+                    <div class="icon">📜</div>
+                    <h3>屋宇署註冊承建商</h3>
+                    <p>小型工程承建商 (第 II, III 級別)<br>類別：A, B, C, D, E, F, G</p>
+                </div>
+                <div>
+                    <div class="icon">📊</div>
+                    <h3>聲學顧問認可</h3>
+                    <p>隔音玻璃及門框系統經第三方測試，符合商業辦公室隔音指標。</p>
+                </div>
+                <div>
+                    <div class="icon">🤝</div>
+                    <h3>40年相關項目經驗</h3>
+                    <p>團隊累積豐富的實地施工與協調經驗，正積極拓展與各界設計及工程公司的長遠合作。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="container contact-section" id="contact">
+        <h2 class="section-title" style="margin-top: 0;">與我們討論您的工程項目</h2>
+        <p style="text-align: center; color: var(--text-light); margin-bottom: 30px;">無論是初步報價、索取工程細節，或是探討長期合作，歡迎隨時聯絡我們。</p>
+        <form style="background: var(--bg-light); padding: 40px; border-radius: 8px;">
+            <div class="form-row">
+                <div class="form-group">
+                    <label>您的姓名 / 職位</label>
+                    <input type="text" placeholder="例如：陳先生 - 項目經理">
+                </div>
+                <div class="form-group">
+                    <label>代表公司類型</label>
+                    <select>
+                        <option>室內設計公司</option>
+                        <option>建築師事務所 (則樓)</option>
+                        <option>建築 / 裝修工程公司</option>
+                        <option>物業管理公司</option>
+                        <option>其他</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>聯絡電郵</label>
+                <input type="email" placeholder="例如：info@yourdesign.com">
+            </div>
+            <div class="form-group">
+                <label>工程項目簡述 (可選)</label>
+                <textarea rows="4" placeholder="請簡述您的項目地點、所需工程類型（如鋁窗、隔音玻璃）或遇到的技術難題..."></textarea>
+            </div>
+            <button type="button" class="btn-primary" style="width: 100%; font-size: 18px;">發送合作查詢</button>
+            <p style="text-align: center; font-size: 13px; color: #888; margin-top: 15px;">您也可以直接發送圖紙至：sales@ching-wah.com</p>
+        </form>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 菁華工程有限公司 Ching Wah Engineering Limited. All Rights Reserved.</p>
+            <p>屋宇署註冊小型工程承建商 | 專營香港室內外鋁窗、不鏽鋼及玻璃工程</p>
+        </div>
+    </footer>
+
+</body>
+</html>

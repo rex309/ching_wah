@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>過往項目 | 菁華工程有限公司</title>
+    <style>
+        /* 基礎品牌設定 */
+        :root {
+            --primary-color: #27ae60; 
+            --text-dark: #333333;
+            --text-light: #666666;
+            --bg-light: #f9f9f9;
+        }
+        body { font-family: 'Noto Sans HK', 'Microsoft JhengHei', sans-serif; margin: 0; padding: 0; color: var(--text-dark); background-color: var(--bg-light); line-height: 1.6; }
+        a { text-decoration: none; color: inherit; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        
+        /* 導覽列 */
+        header { background: #fff; box-shadow: 0 2px 10px rgba(0,0,0,0.05); padding: 15px 0; position: sticky; top: 0; z-index: 100; }
+        .header-content { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 24px; font-weight: bold; color: var(--primary-color); }
+        .back-to-home { font-weight: bold; color: var(--text-light); display: flex; align-items: center; gap: 5px; transition: color 0.3s; }
+        .back-to-home:hover { color: var(--primary-color); }
+
+        /* 頁面標題區塊 */
+        .page-header { text-align: center; padding: 50px 20px 30px; }
+        .page-header h1 { margin: 0 0 10px 0; font-size: 32px; }
+        .page-header p { color: var(--text-light); max-width: 600px; margin: 0 auto; }
+
+        /* =========================================
+           視圖 1：分類目錄網格 (Category View)
+           ========================================= */
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+            padding-bottom: 80px;
+        }
+        .category-card {
+            background: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: 1px solid #eee;
+        }
+        .category-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+        .category-cover {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            display: block;
+        }
+        .category-info {
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .category-info h3 { margin: 0; font-size: 18px; color: var(--text-dark); }
+        .category-info .arrow { color: var(--primary-color); font-weight: bold; font-size: 20px; }
+
+        /* =========================================
+           視圖 2：具體照片網格 (Photo View)
+           ========================================= */
+        #photo-view-section { display: none; padding-bottom: 80px; }
+        
+        .view-controls {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 15px;
+        }
+        .btn-back-category {
+            background: #fff;
+            border: 1px solid #ddd;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+        }
+        .btn-back-category:hover { background: var(--primary-color); color: #fff; border-color: var(--primary-color); }
+        
+        .current-category-title { font-size: 24px; margin: 0 0 0 20px; color: var(--primary-color); }
+
+        .photo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 30px;
+        }
+        .photo-card {
+            background: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            border: 1px solid #eee;
+        }
+        .photo-card img {
+            width: 100%;
+            height: 260px;
+            object-fit: cover;
+            display: block;
+            border-bottom: 1px solid #eee;
+        }
+        .photo-info { padding: 20px; }
+        .photo-info h4 { margin: 0 0 10px 0; font-size: 18px; color: var(--text-dark); }
+        .photo-info p { margin: 0; font-size: 14px; color: var(--text-light); line-height: 1.5; }
+
+        .no-photos { text-align: center; padding: 40px; color: #888; background: #fff; border-radius: 8px; grid-column: 1 / -1; }
+
+        /* =========================================
+           手機版響應式設計 (Mobile Responsive)
+           ========================================= */
+        @media (max-width: 768px) {
+            .header-content { flex-direction: column; gap: 10px; }
+            .page-header h1 { font-size: 26px; }
+            
+            /* 手機版改為單行排列，避免照片被過度壓縮 */
+            .category-grid { grid-template-columns: 1fr; gap: 20px; }
+            .photo-grid { grid-template-columns: 1fr; gap: 20px; }
+            
+            /* 照片內頁的手機版控制列 */
+            .view-controls { flex-direction: column; align-items: flex-start; gap: 15px; }
+            .current-category-title { margin: 0; font-size: 20px; }
+            
+            /* 調整手機版圖片高度 */
+            .photo-card img { height: auto; max-height: 250px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container header-content">
+            <div class="logo">菁華工程 CHING WAH</div>
+            <a href="index.html" class="back-to-home">← 返回首頁</a>
+        </div>
+    </header>
+
+    <div id="category-view-section">
+        <div class="page-header container">
+            <h1>業務範疇與工程實績</h1>
+            <p>請選擇下方工程類別，查看菁華工程過往的專業施工細節與項目照片。</p>
+        </div>
+        <div class="container category-grid" id="category-grid">
+            </div>
+    </div>
+
+    <div class="container" id="photo-view-section">
+        <div class="page-header" style="padding-bottom: 10px;"></div>
+        <div class="view-controls">
+            <button class="btn-back-category" onclick="showCategoryView()">← 返回分類目錄</button>
+            <h2 class="current-category-title" id="current-category-title">類別名稱</h2>
+        </div>
+        <div class="photo-grid" id="photo-grid">
+            </div>
+    </div>
+
+
+    <script>
+        // 你的 galleryData 資料庫保持不變，照你原本整理好的貼上即可！
+        const galleryData = [
+    {
+        id: "soundproof-doors",
+        title: "隔音玻璃門",
+        coverImage: "https://drive.google.com/file/d/1cbbJcDXqRkcbqnyx0_4EUH6U8k_IIytd/view?usp=drive_link",
+        photos: [
+            { image: "https://drive.google.com/file/d/1cbbJcDXqRkcbqnyx0_4EUH6U8k_IIytd/view?usp=drive_link", title: "隔音玻璃門", desc: "" },
+            { image: "https://drive.google.com/file/d/1m8Bzv7o5W5CpzzF9VvGf_udDkOaCr61h/view?usp=drive_link", title: "隔音玻璃門", desc: "" },
+            { image: "https://drive.google.com/file/d/1J4vL2vqRcp2h3gzNjEjIKISIZ-hp_PK7/view?usp=drive_link", title: "隔音玻璃門", desc: "" },
+            { image: "https://drive.google.com/file/d/1XTdNrrlQyxROoJbEh7EvoCSLoNbJS_xn/view?usp=drive_link", title: "隔音玻璃門", desc: "" },
+            { image: "https://drive.google.com/file/d/1nvQXcPF6NEPBvtZf3K8VS1EgIhiYAzT3/view?usp=drive_link", title: "隔音玻璃門", desc: "" },
+            { image: "https://drive.google.com/file/d/1kJOcrAtVoq3T_FPIZgVC1ORTnN5LqmP7/view?usp=drive_link", title: "隔音玻璃門", desc: "" },
+            { image: "https://drive.google.com/file/d/1DjoqtYZ9plJd0jU_a-SkSOHjp5Nz90GF/view?usp=drive_link", title: "隔音玻璃門", desc: "" },
+            { image: "https://www.ching-wah.com/wp-content/uploads/2026/02/image20-370x340.jpg", title: "落地玻璃", desc: "" },
+            { image: "https://www.ching-wah.com/wp-content/uploads/2026/02/image89-370x340.jpg", title: "獨立間隔房", desc: "" }
+        ]
+    },
+    {
+        id: "sliding-doors",
+        title: "趟摺門及趟門",
+        coverImage: "https://www.ching-wah.com/wp-content/uploads/2026/02/image47-370x340.jpg",
+        photos: [
+            { image: "https://www.ching-wah.com/wp-content/uploads/2026/02/image47-370x340.jpg", title: "趟摺門及趟門", desc: "" },
+            { image: "https://www.ching-wah.com/wp-content/uploads/2026/02/image48-370x340.jpg", title: "趟摺門及趟門", desc: "" },
+            { image: "https://www.ching-wah.com/wp-content/uploads/2026/02/image93-370x340.jpg", title: "趟摺門及趟門", desc: "" },
+            { image: "https://www.ching-wah.com/wp-content/uploads/2026/02/image97-370x340.jpg", title: "趟摺門及趟門", desc: "" },
+            { image: "https://drive.google.com/file/d/1AdRObmd4kHoClbrUpGWM0WNby8RTk2o9/view?usp=drive_link", title: "趟摺門及趟門", desc: "" },
+            { image: "https://drive.google.com/file/d/1bT84M9RPVWxMmqOwInMeiL019rWipGIL/view?usp=drive_link", title: "趟摺門及趟門", desc: "" },
+            { image: "https://drive.google.com/file/d/1iNEihX2tG568tOmV2UoROnAQECQVEXM-/view?usp=drive_link", title: "趟摺門及趟門", desc: "" },
+            { image: "https://drive.google.com/file/d/1_t-CICngJAnbWpYZhAHozdKu7KGQrmz8/view?usp=drive_link", title: "趟摺門及趟門", desc: "" },
+            { image: "https://drive.google.com/file/d/1IOOklq7BKX6XmMyYSeeWh1Awd5CuU8SW/view?usp=drive_link", title: "趟摺門及趟門", desc: "" },
+            { image: "https://drive.google.com/file/d/1Q4ZM8JQ7BkIMvwi3-hXvtByrtM9WW2Nk/view?usp=drive_link", title: "趟摺門及趟門", desc: "" }
+        ]
+    },
+    {
+        id: "glass-balustrade",
+        title: "玻璃攔河",
+        coverImage: "https://www.ching-wah.com/wp-content/uploads/2026/02/image92-370x340.jpg",
+        photos: [
+            { image: "https://www.ching-wah.com/wp-content/uploads/2026/02/image92-370x340.jpg", title: "室內樓梯", desc: "" },
+            { image: "https://www.ching-wah.com/wp-content/uploads/2026/02/image72-370x340.jpg", title: "露台", desc: "" },
+            { image: "https://www.ching-wah.com/wp-content/uploads/2026/02/image65-370x340.jpg", title: "室外天台", desc: "" },
+            { image: "https://www.ching-wah.com/wp-content/uploads/2026/02/image73-370x340.jpg", title: "弧形玻璃", desc: "" }
+        ]
+    },
+    {
+        id: "aluminum-windows",
+        title: "鋁窗、包鋁板及巴士門",
+        coverImage: "https://www.ching-wah.com/wp-content/uploads/2026/02/1-370x340.jpg",
+        photos: [
+            { image: "https://www.ching-wah.com/wp-content/uploads/2026/02/1-370x340.jpg", title: "鋁窗工程", desc: "" },
+            { image: "https://www.ching-wah.com/wp-content/uploads/2026/02/2-370x340.jpg", title: "鋁窗工程", desc: "" },
+            { image: "https://www.ching-wah.com/wp-content/uploads/2026/02/3-370x340.jpg", title: "鋁窗工程", desc: "" },
+            { image: "https://www.ching-wah.com/wp-content/uploads/2026/02/4-370x340.jpg", title: "鋁窗工程", desc: "" },
+            { image: "https://www.ching-wah.com/wp-content/uploads/2026/02/5-370x340.jpg", title: "鋁窗工程", desc: "" },
+            { image: "https://www.ching-wah.com/wp-content/uploads/2026/02/6-370x340.jpg", title: "鋁窗工程", desc: "" },
+            { image: "https://www.ching-wah.com/wp-content/uploads/2026/02/7-370x340.jpg", title: "鋁窗工程", desc: "" }
+        ]
+    },
+    {
+        id: "stainless-steel",
+        title: "不鏽鋼及門面工程",
+        coverImage: "https://www.ching-wah.com/wp-content/uploads/2026/02/1-1-370x340.jpg",
+        photos: [
+            { image: "https://www.ching-wah.com/wp-content/uploads/2026/02/1-1-370x340.jpg", title: "通風窗", desc: "" },
+            { image: "https://www.ching-wah.com/wp-content/uploads/2026/02/2-1-370x340.jpg", title: "升降機𨋢門", desc: "" },
+            { image: "https://www.ching-wah.com/wp-content/uploads/2026/02/3-1-370x340.jpg", title: "店舖門面", desc: "" },
+            { image: "https://www.ching-wah.com/wp-content/uploads/2026/02/4-1-370x340.jpg", title: "出入口門框", desc: "" }
+        ]
+    },
+    {
+        id: "shower-screens",
+        title: "浴屏",
+        coverImage: "https://www.ching-wah.com/wp-content/uploads/2026/02/image103-370x340.jpg",
+        photos: [
+            { image: "https://www.ching-wah.com/wp-content/uploads/2026/02/image103-370x340.jpg", title: "對角浴屏門", desc: "" },
+            { image: "https://www.ching-wah.com/wp-content/uploads/2026/02/image24-370x340.jpg", title: "浴屏", desc: "" },
+            { image: "https://www.ching-wah.com/wp-content/uploads/2026/02/image27-370x340.jpg", title: "浴屏", desc: "" },
+            { image: "https://www.ching-wah.com/wp-content/uploads/2026/02/image75-370x340.jpg", title: "趟門浴屏", desc: "" }
+        ]
+    },
+    {
+        id: "glass-replacement",
+        title: "換玻璃工程",
+        coverImage: "https://www.ching-wah.com/wp-content/uploads/2026/02/image79-370x340.jpg",
+        photos: [
+            { image: "https://www.ching-wah.com/wp-content/uploads/2026/02/image79-370x340.jpg", title: "店舖招牌", desc: "" },
+            { image: "https://www.ching-wah.com/wp-content/uploads/2026/02/image32-370x340.jpg", title: "露台裝修", desc: "" },
+            { image: "https://www.ching-wah.com/wp-content/uploads/2026/02/image84-370x340.jpg", title: "換玻璃", desc: "" },
+            { image: "https://www.ching-wah.com/wp-content/uploads/2026/02/image82-370x340.jpg", title: "換玻璃", desc: "" }
+        ]
+    }
+];
+
+        const categoryGrid = document.getElementById('category-grid');
+        const photoGrid = document.getElementById('photo-grid');
+        const categoryViewSection = document.getElementById('category-view-section');
+        const photoViewSection = document.getElementById('photo-view-section');
+        const currentCategoryTitle = document.getElementById('current-category-title');
+
+        function initCategories() {
+            galleryData.forEach(cat => {
+                const card = document.createElement('div');
+                card.className = 'category-card';
+                card.onclick = () => showPhotoView(cat.id);
+                card.innerHTML = `
+                    <img src="${cat.coverImage}" alt="${cat.title}" class="category-cover" loading="lazy">
+                    <div class="category-info">
+                        <h3>${cat.title}</h3>
+                        <span class="arrow">→</span>
+                    </div>
+                `;
+                categoryGrid.appendChild(card);
+            });
+        }
+
+        function showPhotoView(categoryId) {
+            const category = galleryData.find(c => c.id === categoryId);
+            if (!category) return;
+            currentCategoryTitle.innerText = category.title;
+            window.location.hash = categoryId;
+            photoGrid.innerHTML = '';
+            if (category.photos.length === 0) {
+                photoGrid.innerHTML = '<div class="no-photos">該分類目前尚未上傳項目照片，我們將盡快更新。</div>';
+            } else {
+                category.photos.forEach(photo => {
+                    const pCard = document.createElement('div');
+                    pCard.className = 'photo-card';
+                    pCard.innerHTML = `
+                        <img src="${photo.image}" alt="${photo.title}" loading="lazy">
+                        <div class="photo-info">
+                            <h4>${photo.title}</h4>
+                            <p>${photo.desc}</p>
+                        </div>
+                    `;
+                    photoGrid.appendChild(pCard);
+                });
+            }
+            categoryViewSection.style.display = 'none';
+            photoViewSection.style.display = 'block';
+            window.scrollTo(0, 0); 
+        }
+
+        function showCategoryView() {
+            window.location.hash = ''; 
+            photoViewSection.style.display = 'none';
+            categoryViewSection.style.display = 'block';
+        }
+
+        function checkHash() {
+            const hash = window.location.hash.replace('#', '');
+            if (hash && galleryData.some(c => c.id === hash)) {
+                showPhotoView(hash);
+            } else {
+                showCategoryView();
+            }
+        }
+
+        initCategories();
+        checkHash();
+        window.addEventListener('popstate', checkHash);
+    </script>
+</body>
+</html>
