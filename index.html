@@ -281,8 +281,61 @@
             text-align: center;
         }
 
-        /* B2B 聯絡表單 */
-        .contact-section { padding: 60px 0; max-width: 800px; margin: 0 auto; }
+        /* =========================================
+           新版聯絡區塊 (左右分欄設計)
+           ========================================= */
+        .contact-section { padding: 60px 0; }
+        .contact-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: start;
+        }
+        
+        /* 左側：地圖與資訊 */
+        .contact-info-col {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+        .map-container {
+            width: 100%;
+            height: 300px;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid #ddd;
+            background: #eee; /* 載入地圖前的底色 */
+        }
+        .map-container iframe {
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+        .contact-details h3 {
+            margin-top: 0;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+            font-size: 22px;
+        }
+        .contact-details p {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+        .contact-details .info-icon {
+            font-size: 20px;
+            margin-top: 2px;
+        }
+
+        /* 右側：表單 */
+        .contact-form-wrapper {
+            background: var(--bg-light);
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+        }
         .form-row { display: flex; gap: 20px; }
         .form-group { margin-bottom: 20px; flex: 1; }
         .form-group label { display: block; margin-bottom: 8px; font-weight: bold; }
@@ -293,6 +346,11 @@
             border-radius: 4px;
             font-family: inherit;
             box-sizing: border-box;
+            transition: border-color 0.3s;
+        }
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
         }
         
         /* 頁尾 */
@@ -312,9 +370,11 @@
             .hero h1 { font-size: 32px; }
             .hero p { font-size: 16px; }
 
-            /* 表單排版 */
+            /* 聯絡區塊改為單行排列 */
+            .contact-layout { grid-template-columns: 1fr; gap: 40px; }
+            .contact-section { padding: 40px 0; }
+            .contact-form-wrapper { padding: 30px 20px; }
             .form-row { flex-direction: column; gap: 0; }
-            .contact-section { padding: 40px 20px; }
 
             /* 網格保護 */
             .portfolio-grid, .partners-grid, .trust-grid { grid-template-columns: 1fr; }
@@ -365,10 +425,9 @@
             <p>為室內設計公司、建築裝修及物業管理，提供一站式金屬、鋁窗與隔音玻璃解決方案。</p>
             <div class="tags">
                 <span>#註冊小型工程承建商</span>
-                <span>#隔音玻璃間隔及門</span>
-                <span>#暗藏門鉸</span>
+                <span>#隔音玻璃間隔</span>
+                <span>#不鏽鋼暗藏件</span>
                 <span>#CAD圖紙支援</span>
-                <span>#不鏽鋼、鐵器、玻璃</span>
             </div>
             <a href="#portfolio" class="btn-primary" style="font-size: 18px; padding: 15px 40px;">查看專業實績</a>
         </div>
@@ -493,40 +552,71 @@
 
     <section class="container contact-section" id="contact">
         <h2 class="section-title" style="margin-top: 0;">與我們討論您的工程項目</h2>
-        <p style="text-align: center; color: var(--text-light); margin-bottom: 30px;">無論是初步報價、索取工程細節，或是探討長期合作，歡迎隨時聯絡我們。</p>
-        <form style="background: var(--bg-light); padding: 40px; border-radius: 8px;">
-            <div class="form-row">
-                <div class="form-group">
-                    <label>您的姓名 / 職位</label>
-                    <input type="text" placeholder="例如：陳先生 - 項目經理">
+        <p style="text-align: center; color: var(--text-light); margin-bottom: 40px;">無論是初步報價、索取工程細節，或是探討長期合作，歡迎隨時聯絡我們。</p>
+        
+        <div class="contact-layout">
+            <div class="contact-info-col">
+                <div class="map-container">
+                    <iframe src="https://maps.google.com/maps?q=九龍土瓜灣道239號益豐大廈&t=&z=16&ie=UTF8&iwloc=&output=embed" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                 </div>
-                <div class="form-group">
-                    <label>代表公司類型</label>
-                    <select>
-                        <option>室內設計公司</option>
-                        <option>建築師事務所 (則樓)</option>
-                        <option>建築 / 裝修工程公司</option>
-                        <option>物業管理公司</option>
-                        <option>其他</option>
-                    </select>
+                
+                <div class="contact-details">
+                    <h3>聯絡資料</h3>
+                    <p>
+                        <span class="info-icon">📍</span> 
+                        <span><strong>公司地址：</strong><br>九龍土瓜灣道239號益豐大廈C14號舖地下</span>
+                    </p>
+                    <p>
+                        <span class="info-icon">📞</span> 
+                        <span><strong>聯絡電話：</strong><br>[請在此填寫電話，例如：+852 1234 5678]</span>
+                    </p>
+                    <p>
+                        <span class="info-icon">✉️</span> 
+                        <span><strong>電郵地址：</strong><br>sales@ching-wah.com</span>
+                    </p>
+                    <p>
+                        <span class="info-icon">🕒</span> 
+                        <span><strong>辦公時間：</strong><br>星期一至五：[09:00 - 18:00]<br>星期六：[09:00 - 13:00]</span>
+                    </p>
                 </div>
             </div>
-            <div class="form-group">
-                <label>聯絡電郵</label>
-                <input type="email" placeholder="例如：info@yourdesign.com">
+
+            <div class="contact-form-wrapper">
+                <form>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>您的姓名 / 職位</label>
+                            <input type="text" placeholder="例如：陳先生 - 項目經理">
+                        </div>
+                        <div class="form-group">
+                            <label>代表公司類型</label>
+                            <select>
+                                <option>室內設計公司</option>
+                                <option>建築師事務所 (則樓)</option>
+                                <option>建築 / 裝修工程公司</option>
+                                <option>物業管理公司</option>
+                                <option>其他</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>聯絡電郵</label>
+                        <input type="email" placeholder="例如：info@yourdesign.com">
+                    </div>
+                    <div class="form-group">
+                        <label>工程項目簡述 (可選)</label>
+                        <textarea rows="5" placeholder="請簡述您的項目地點、所需工程類型（如鋁窗、隔音玻璃）或遇到的技術難題..."></textarea>
+                    </div>
+                    <button type="button" class="btn-primary" style="width: 100%; font-size: 18px;">發送合作查詢</button>
+                    <p style="text-align: center; font-size: 13px; color: #888; margin-top: 15px;">您也可以直接發送圖紙至：sales@ching-wah.com</p>
+                </form>
             </div>
-            <div class="form-group">
-                <label>工程項目簡述 (可選)</label>
-                <textarea rows="4" placeholder="請簡述您的項目地點、所需工程類型（如鋁窗、隔音玻璃）或遇到的技術難題..."></textarea>
-            </div>
-            <button type="button" class="btn-primary" style="width: 100%; font-size: 18px;">發送合作查詢</button>
-            <p style="text-align: center; font-size: 13px; color: #888; margin-top: 15px;">您也可以直接發送圖紙至：sales@ching-wah.com</p>
-        </form>
+        </div>
     </section>
 
     <footer>
         <div class="container">
-            <p>&copy; 2026 菁華工程有限公司 Ching Wah Engineering Limited. All Rights Reserved.</p>
+            <p>© 2026 菁華工程有限公司 Ching Wah Engineering Limited. All Rights Reserved.</p>
             <p>屋宇署註冊小型工程承建商 | 專營香港室內外鋁窗、不鏽鋼及玻璃工程</p>
         </div>
     </footer>
