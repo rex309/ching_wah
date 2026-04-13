@@ -40,7 +40,7 @@
             padding: 15px 0;
             position: sticky;
             top: 0;
-            z-index: 100;
+            z-index: 1000;
         }
         .header-content {
             display: flex;
@@ -87,6 +87,72 @@
             box-sizing: border-box;
         }
         .btn-whatsapp:hover { background-color: #128C7E; }
+
+        /* 漢堡與側滑選單 (Hamburger & Drawer) */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            justify-content: space-around;
+            width: 30px;
+            height: 24px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            z-index: 2001;
+        }
+        .hamburger span {
+            width: 100%;
+            height: 3px;
+            background: var(--text-dark);
+            border-radius: 10px;
+            transition: all 0.3s linear;
+        }
+        .mobile-drawer {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 280px;
+            height: 100%;
+            background: #fff;
+            z-index: 2000;
+            transform: translateX(100%);
+            transition: transform 0.3s ease-in-out;
+            padding: 80px 30px;
+            box-shadow: -5px 0 15px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            overflow-y: auto;
+        }
+        .mobile-drawer.active { transform: translateX(0); }
+        .mobile-drawer a {
+            font-size: 18px;
+            font-weight: 500;
+            color: var(--text-dark);
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        .mobile-drawer .drawer-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 10px;
+        }
+        .mobile-drawer .drawer-actions a { border-bottom: none; padding-bottom: 0; text-align: center; }
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1500;
+            display: none;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .overlay.active { display: block; opacity: 1; }
 
         /* 首頁大圖 (Hero Section) */
         .hero {
@@ -236,12 +302,10 @@
            手機版響應式設計 (Mobile Responsive)
            ========================================= */
         @media (max-width: 768px) {
-            /* Header 與按鈕 */
-            .header-content { flex-direction: column; gap: 15px; }
-            .nav-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-bottom: 5px; }
-            .nav-links a { margin: 0 5px; }
-            .header-actions { flex-direction: column; width: 100%; gap: 10px; }
-            .btn-whatsapp, .btn-primary { width: 100%; font-size: 16px; }
+            /* Header 改為漢堡選單邏輯 */
+            .header-content { flex-direction: row; justify-content: space-between; align-items: center; }
+            .nav-links, .header-actions { display: none; }
+            .hamburger { display: flex; }
             
             /* 橫幅 */
             .hero { padding: 60px 20px; }
@@ -277,8 +341,23 @@
                 </a>
                 <a href="#contact" class="btn-primary">立即獲取報價</a>
             </div>
+            <button class="hamburger" onclick="toggleMenu()">
+                <span></span><span></span><span></span>
+            </button>
         </div>
     </header>
+
+    <div class="mobile-drawer" id="mobileDrawer">
+        <a href="#top" onclick="toggleMenu()">首頁</a>
+        <a href="#portfolio" onclick="toggleMenu()">焦點項目</a>
+        <a href="#scope" onclick="toggleMenu()">業務範疇</a>
+        <a href="projects.html" onclick="toggleMenu()">過往項目</a>
+        <div class="drawer-actions">
+            <a href="#" class="btn-whatsapp" target="_blank" onclick="toggleMenu()">WhatsApp 查詢</a>
+            <a href="#contact" class="btn-primary" onclick="toggleMenu()">立即獲取報價</a>
+        </div>
+    </div>
+    <div class="overlay" id="overlay" onclick="toggleMenu()"></div>
 
     <section class="hero">
         <div class="container">
@@ -451,5 +530,14 @@
         </div>
     </footer>
 
+    <script>
+        function toggleMenu() {
+            const drawer = document.getElementById('mobileDrawer');
+            const overlay = document.getElementById('overlay');
+            drawer.classList.toggle('active');
+            overlay.classList.toggle('active');
+            document.body.style.overflow = drawer.classList.contains('active') ? 'hidden' : '';
+        }
+    </script>
 </body>
 </html>
