@@ -96,7 +96,6 @@
         .portfolio-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
         .portfolio-card { background: #fff; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
         
-        /* 焦點項目圖片拉長以增加氣勢 */
         .portfolio-img { width: 100%; height: 350px; object-fit: cover; display: block; }
         .portfolio-content { padding: 20px; }
         .portfolio-content h3 { margin-top: 0; color: var(--primary-color); font-size: 18px; }
@@ -104,14 +103,13 @@
 
         .scope-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; }
         
-        /* 業務範疇卡片 (改為 contain 完整顯示不裁切) */
+        /* 業務範疇卡片 (contain 完整顯示不裁切) */
         .scope-item { position: relative; height: 350px; border: 1px solid #ddd; overflow: hidden; border-radius: 8px; background-color: var(--bg-light); }
         .scope-item a.img-link { display: block; width: 100%; height: 100%; }
         .scope-item img { 
-            width: 100%; height: calc(100% - 45px); /* 預留底部標籤的高度 */
-            object-fit: contain; /* 完整顯示，不裁切 */
+            width: 100%; height: calc(100% - 45px); 
+            object-fit: contain; 
             display: block; 
-            /* 移除了 transform 放大特效 */
         }
         .scope-label { position: absolute; bottom: 0; left: 0; right: 0; background: rgba(255, 255, 255, 0.95); display: flex; justify-content: space-between; align-items: stretch; border-top: 1px solid #eee; height: 45px; }
         .scope-label .title { font-weight: bold; font-size: 15px; color: #000; padding: 0 15px; display: flex; align-items: center; }
@@ -155,7 +153,9 @@
             .float-whatsapp svg { width: 20px; height: 20px; }
 
             .slider-arrow {
-                display: flex; position: absolute; top: 40%; transform: translateY(-50%);
+                display: flex; position: absolute; 
+                top: 300px;
+                transform: translateY(-50%);
                 width: 44px; height: 44px; background: rgba(255,255,255,0.95);
                 border: 1px solid #eee; border-radius: 50%; box-shadow: 0 4px 10px rgba(0,0,0,0.15);
                 align-items: center; justify-content: center; font-size: 20px; color: var(--primary-color);
@@ -173,8 +173,8 @@
             .portfolio-grid::-webkit-scrollbar { display: none; }
             .portfolio-card { flex: 0 0 100%; scroll-snap-align: center; }
             
-            /* 手機版焦點項目圖片拉長，營造全螢幕包覆感 */
-            .portfolio-img { height: 60vh; } 
+            /* 修正版：讓圖片保持適中高度，能一併看見文字和操作按鈕 */
+            .portfolio-img { height: 400px; } 
 
             .scope-item { height: 42vh; }
 
