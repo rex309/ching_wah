@@ -285,9 +285,10 @@
         <div class="container">
             <h2 class="section-title">業務範疇</h2>
             <div class="scope-grid">
+                <!-- 修改處：加入了 handleImageFallback 函數 -->
                 <div class="scope-item">
                     <a href="projects#soundproof-doors" class="img-link">
-                        <img src="img/spg-01.jpg" alt="隔音玻璃間隔及門" onerror="this.src='https://images.unsplash.com/photo-1600607686527-6fb886090705?auto=format&fit=crop&w=800&q=80'">
+                        <img src="img/spg-01.jpg" alt="隔音玻璃間隔及門" onerror="handleImageFallback(this, 'https://images.unsplash.com/photo-1600607686527-6fb886090705?auto=format&fit=crop&w=800&q=80')">
                     </a>
                     <div class="scope-label">
                         <span class="title">隔音玻璃門</span>
@@ -296,7 +297,7 @@
                 </div>
                 <div class="scope-item">
                     <a href="projects#sliding-doors" class="img-link">
-                        <img src="img/sl-03.jpg" alt="趟摺門及趟門" onerror="this.src='https://images.unsplash.com/photo-1582282577215-64bc61c1a93b?auto=format&fit=crop&w=800&q=80'">
+                        <img src="img/sl-03.jpg" alt="趟摺門及趟門" onerror="handleImageFallback(this, 'https://images.unsplash.com/photo-1582282577215-64bc61c1a93b?auto=format&fit=crop&w=800&q=80')">
                     </a>
                     <div class="scope-label">
                         <span class="title">趟摺門及趟門</span>
@@ -305,7 +306,7 @@
                 </div>
                 <div class="scope-item">
                     <a href="projects#glass-balustrade" class="img-link">
-                        <img src="img/gb-01.jpg" alt="玻璃攔河" onerror="this.src='https://images.unsplash.com/photo-1504307651254-35680f356fce?auto=format&fit=crop&w=800&q=80'">
+                        <img src="img/gb-01.jpg" alt="玻璃攔河" onerror="handleImageFallback(this, 'https://images.unsplash.com/photo-1504307651254-35680f356fce?auto=format&fit=crop&w=800&q=80')">
                     </a>
                     <div class="scope-label">
                         <span class="title">玻璃攔河</span>
@@ -314,7 +315,7 @@
                 </div>
                 <div class="scope-item">
                     <a href="projects#aluminum-windows" class="img-link">
-                        <img src="img/alu-01.jpg" alt="鋁窗、包鋁板及巴士門" onerror="this.src='https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=800&q=80'">
+                        <img src="img/alu-01.jpg" alt="鋁窗、包鋁板及巴士門" onerror="handleImageFallback(this, 'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=800&q=80')">
                     </a>
                     <div class="scope-label">
                         <span class="title" style="font-size: 13px;">鋁窗、包鋁板及巴士門</span>
@@ -417,6 +418,24 @@
     <button id="backToTop" class="float-top-center">↑ 回到頂部</button>
 
     <script>
+        // 新增：處理圖片載入失敗的自動切換副檔名邏輯
+        function handleImageFallback(imgElement, defaultImgUrl) {
+            if (!imgElement.dataset.retried) {
+                imgElement.dataset.retried = "true"; 
+                const currentSrc = imgElement.getAttribute('src');
+                
+                if (currentSrc.endsWith('.jpg')) {
+                    imgElement.src = currentSrc.replace('.jpg', '.jpeg');
+                    return; 
+                } else if (currentSrc.endsWith('.jpeg')) {
+                    imgElement.src = currentSrc.replace('.jpeg', '.jpg');
+                    return;
+                }
+            }
+            imgElement.src = defaultImgUrl;
+            imgElement.onerror = null; 
+        }
+
         function scrollToTop(e) {
             if(e) e.preventDefault();
             window.scrollTo({ top: 0, behavior: 'smooth' });
