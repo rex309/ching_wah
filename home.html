@@ -45,7 +45,7 @@
         .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1500; display: none; opacity: 0; transition: opacity 0.3s; }
         .overlay.active { display: block; opacity: 1; }
 
-        /* 懸浮按鈕系統 */
+        /* 懸浮按鈕系統 (WhatsApp 長期顯示在右下角) */
         .floating-action-group { position: fixed; right: 20px; bottom: 30px; display: flex; flex-direction: column; gap: 12px; z-index: 2000; }
         .float-whatsapp { 
             background-color: #25D366; color: white; display: flex; align-items: center; gap: 10px;
@@ -56,18 +56,30 @@
         .float-whatsapp svg { width: 26px; height: 26px; transition: 0.3s; }
         .float-whatsapp:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(37, 211, 102, 0.6); }
         
-        /* 獨立的中間回到頂部按鈕 */
-        .float-top-center {
-            position: fixed; bottom: -60px; left: 50%; transform: translateX(-50%);
-            background-color: rgba(51, 51, 51, 0.85); color: #fff;
-            padding: 10px 24px; border-radius: 30px; font-size: 14px; font-weight: 600;
-            border: none; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.15);
-            transition: bottom 0.3s ease, background-color 0.3s; z-index: 1999;
-            display: flex; align-items: center; gap: 8px;
-            backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px);
+        /* 獨立的回到頂部按鈕 (實心灰色、白色箭頭) */
+        .float-top-circle {
+            position: fixed; 
+            bottom: -60px; 
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px; 
+            height: 50px;
+            background-color: #666666; /* 實心灰色 */
+            border: none;
+            border-radius: 50%; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center;
+            cursor: pointer; 
+            transition: bottom 0.3s ease, background-color 0.3s, transform 0.3s; 
+            z-index: 1999;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15); /* 輕微陰影增加立體感 */
+            padding: 0;
         }
-        .float-top-center.show { bottom: 30px; }
-        .float-top-center:hover { background-color: var(--primary-color); }
+        .float-top-circle svg { width: 24px; height: 24px; fill: none; stroke: #ffffff; /* 白色箭頭 */ stroke-width: 4; stroke-linecap: round; stroke-linejoin: round; }
+        .float-top-circle.show { bottom: 30px; }
+        .float-top-circle.hide { bottom: -60px !important; }
+        .float-top-circle:hover { background-color: var(--primary-color); transform: translateX(-50%) translateY(-3px); }
 
         /* 內容區塊樣式 */
         .hero { background: linear-gradient(rgba(0,0,0,0.75), rgba(0,0,0,0.75)), url('https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1920&q=80') center/cover; color: #fff; text-align: center; padding: 120px 20px; }
@@ -106,7 +118,6 @@
 
         .scope-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; }
         
-        /* 業務範疇卡片 (contain 完整顯示不裁切) */
         .scope-item { position: relative; height: 350px; border: 1px solid #ddd; overflow: hidden; border-radius: 8px; background-color: var(--bg-light); }
         .scope-item a.img-link { display: block; width: 100%; height: 100%; }
         .scope-item img { 
@@ -140,6 +151,57 @@
         
         footer { background: #222; color: #aaa; text-align: center; padding: 30px 0; font-size: 14px; }
 
+        /* --- 優惠橫幅與特效樣式 --- */
+        .promo-banner {
+            background-color: #2c3e50;
+            color: #ffffff;
+            text-align: center;
+            padding: 12px 20px;
+            font-size: 15px;
+            font-weight: 500;
+            position: relative;
+            z-index: 2000;
+            letter-spacing: 0.5px;
+        }
+        .promo-banner .highlight-text { color: #f39c12; font-weight: bold; margin-right: 5px; }
+        .promo-banner #countdown { 
+            font-family: monospace; font-size: 1.1em; margin-left: 10px; 
+            background: rgba(255,255,255,0.15); padding: 3px 8px; border-radius: 4px; color: #f39c12; font-weight: bold;
+        }
+        
+        .hero-promo {
+            display: inline-flex;
+            flex-direction: column;
+            gap: 8px;
+            background-color: rgba(243, 156, 18, 0.95);
+            color: #fff;
+            padding: 15px 25px;
+            border-radius: 12px;
+            font-size: 16px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 15px rgba(243, 156, 18, 0.4);
+            animation: pulse-orange 2s infinite;
+            text-align: left;
+        }
+        .hero-promo span { display: block; }
+        @keyframes pulse-orange {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(243, 156, 18, 0.7); }
+            70% { transform: scale(1.03); box-shadow: 0 0 0 15px rgba(243, 156, 18, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(243, 156, 18, 0); }
+        }
+
+        .float-whatsapp {
+            padding: 16px 32px;
+            font-size: 18px;
+            animation: pulse-green 2s infinite;
+        }
+        @keyframes pulse-green {
+            0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.6); }
+            70% { box-shadow: 0 0 0 15px rgba(37, 211, 102, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
+        }
+        /* ------------------------------ */
+
         @media (max-width: 900px) { .scope-grid { grid-template-columns: repeat(2, 1fr); } }
         @media (max-width: 768px) {
             .header-content { flex-direction: row; justify-content: space-between; align-items: center; }
@@ -152,8 +214,12 @@
             .section-title { font-size: 28px; margin: 0 0 30px 0; }
 
             .floating-action-group { right: 15px; bottom: 20px; }
-            .float-whatsapp { padding: 8px 16px; font-size: 14px; gap: 6px; }
-            .float-whatsapp svg { width: 20px; height: 20px; }
+            .float-whatsapp { 
+                padding: 12px 20px; 
+                font-size: 15px;    
+                gap: 8px; 
+            }
+            .float-whatsapp svg { width: 22px; height: 22px; }
 
             .slider-arrow {
                 display: flex; position: absolute; 
@@ -176,7 +242,6 @@
             .portfolio-grid::-webkit-scrollbar { display: none; }
             .portfolio-card { flex: 0 0 100%; scroll-snap-align: center; }
             
-            /* 修正版：讓圖片保持適中高度，能一併看見文字和操作按鈕 */
             .portfolio-img { height: 400px; } 
 
             .scope-item { height: 42vh; }
@@ -186,10 +251,42 @@
             .contact-form-wrapper { padding: 30px 20px; }
             .form-row { flex-direction: column; gap: 0; }
             .trust-grid, .scope-grid { grid-template-columns: 1fr; }
+
+            .promo-banner {
+                padding: 10px 15px;
+                font-size: 14px;
+                display: flex;
+                flex-direction: column; 
+                gap: 8px;
+                line-height: 1.4;
+            }
+            .promo-banner .highlight-text { 
+                display: block; 
+                margin-right: 0;
+                margin-bottom: 2px;
+            }
+            .promo-banner #countdown {
+                margin-left: 0;
+                align-self: center; 
+                font-size: 1.2em;
+                padding: 5px 12px;
+                margin-top: 5px;
+            }
+            .hero-promo { font-size: 14px; padding: 12px 15px; }
+            
+            /* 手機版回到頂部按鈕位置調整 (向上移避免與 WhatsApp 重疊) */
+            .float-top-circle.show { bottom: 80px; }
         }
     </style>
 </head>
 <body id="top">
+    <div class="promo-banner">
+        <span>
+            <span class="highlight-text">【終生 9 折優惠】</span>
+            凡於本週內透過 WhatsApp 聯繫並確認首單合作項目的前 3 間公司，未來所有工程合約均享終生 9 折優惠。
+        </span>
+        <span id="countdown">載入中...</span>
+    </div>
 
     <header>
         <div class="container header-content">
@@ -222,6 +319,10 @@
 
     <section class="hero">
         <div class="container">
+            <div class="hero-promo">
+                <span style="font-weight: 800;">3️⃣ 首三間達成合作的夥伴公司可獲終生9折優惠！</span>
+                <span style="font-weight: normal;">🎉 首單 8 折試用：新夥伴首個項目（包括維修項目）皆可享 8 折優惠</span>
+            </div>
             <h1>40年香港專業工程經驗</h1>
             <p>為 <span class="highlight">室內設計公司、建築裝修及物業管理</span> 提供一站式金屬、鋁窗與隔音玻璃解決方案。</p>
             <div class="tags">
@@ -285,7 +386,6 @@
         <div class="container">
             <h2 class="section-title">業務範疇</h2>
             <div class="scope-grid">
-                <!-- 修改處：加入了 handleImageFallback 函數 -->
                 <div class="scope-item">
                     <a href="projects#soundproof-doors" class="img-link">
                         <img src="img/spg-01.jpg" alt="隔音玻璃間隔及門" onerror="handleImageFallback(this, 'https://images.unsplash.com/photo-1600607686527-6fb886090705?auto=format&fit=crop&w=800&q=80')">
@@ -408,17 +508,19 @@
         </div>
     </footer>
 
-    <div class="floating-action-group">
+    <div class="floating-action-group" id="actionGroup">
         <a href="https://wa.me/852XXXXXXXX" target="_blank" class="float-whatsapp" title="WhatsApp 查詢">
             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.934L0 24l6.335-1.662c1.72.94 3.659 1.437 5.63 1.438h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-            <span>馬上聯絡我們</span>
+            <span>馬上獲取試做優惠</span>
         </a>
     </div>
 
-    <button id="backToTop" class="float-top-center">↑ 回到頂部</button>
+    <!-- 回到頂部按鈕 -->
+    <button id="backToTop" class="float-top-circle" title="回到頂部">
+        <svg viewBox="0 0 24 24"><path d="M4 15l8-8 8 8"/></svg>
+    </button>
 
     <script>
-        // 新增：處理圖片載入失敗的自動切換副檔名邏輯
         function handleImageFallback(imgElement, defaultImgUrl) {
             if (!imgElement.dataset.retried) {
                 imgElement.dataset.retried = "true"; 
@@ -450,10 +552,24 @@
         }
 
         const backToTopBtn = document.getElementById('backToTop');
+        
         window.onscroll = function() {
-            if (window.pageYOffset > 300) backToTopBtn.classList.add('show');
-            else backToTopBtn.classList.remove('show');
+            if (window.pageYOffset > 300) {
+                backToTopBtn.classList.add('show');
+            } else {
+                backToTopBtn.classList.remove('show');
+            }
+
+            // 判斷是否捲動到底部 (兼容手機版與電腦版)
+            // 使用 document.documentElement.scrollHeight 確保在手機動態網址列下也能正確判斷
+            const isAtBottom = (window.innerHeight + window.scrollY) >= document.documentElement.scrollHeight - 100; 
+            if (isAtBottom) {
+                backToTopBtn.classList.add('hide');
+            } else {
+                backToTopBtn.classList.remove('hide');
+            }
         };
+        
         backToTopBtn.onclick = function() { scrollToTop(); };
 
         const portfolioGrid = document.getElementById('portfolioGrid');
@@ -476,6 +592,44 @@
                 });
             });
         }
+
+        function initCountdown() {
+            const TARGET_DATE = ''; 
+            let endTime;
+
+            if (TARGET_DATE !== '') {
+                endTime = new Date(TARGET_DATE).getTime();
+            } else {
+                endTime = localStorage.getItem('cw_promo_end');
+                if (!endTime) {
+                    const date = new Date();
+                    date.setDate(date.getDate() + 7);
+                    endTime = date.getTime();
+                    localStorage.setItem('cw_promo_end', endTime);
+                }
+            }
+
+            const countdownEl = document.getElementById('countdown');
+            
+            const timer = setInterval(() => {
+                const now = new Date().getTime();
+                const distance = endTime - now;
+
+                if (distance < 0) {
+                    clearInterval(timer);
+                    countdownEl.innerText = "優惠已結束";
+                    return;
+                }
+
+                const d = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const h = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const m = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const s = Math.floor((distance % (1000 * 60)) / 1000);
+
+                countdownEl.innerText = `剩餘: ${d}天 ${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+            }, 1000);
+        }
+        initCountdown();
     </script>
 </body>
 </html>
