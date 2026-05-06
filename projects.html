@@ -106,27 +106,48 @@
         .photo-info p { margin: 0; font-size: 14px; color: var(--text-light); line-height: 1.5; }
         .no-photos { text-align: left; padding: 40px; color: #888; background: var(--bg-light); border-radius: 8px; grid-column: 1 / -1; }
 
-        /* WhatsApp 懸浮 */
+        /* WhatsApp 懸浮按鈕 (加入動畫與加大的 Size) */
         .floating-action-group { position: fixed; right: 20px; bottom: 30px; display: flex; flex-direction: column; gap: 12px; z-index: 2000; }
         .float-whatsapp { 
             background-color: #25D366; color: white; display: flex; align-items: center; gap: 10px;
-            padding: 12px 24px; border-radius: 30px; box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4); 
+            padding: 16px 32px; border-radius: 30px; box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4); 
             cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; text-decoration: none;
-            font-weight: bold; font-size: 16px;
+            font-weight: bold; font-size: 18px;
+            animation: pulse-green 2s infinite;
         }
-        .float-whatsapp svg { width: 26px; height: 26px; }
+        .float-whatsapp svg { width: 26px; height: 26px; transition: 0.3s; }
         .float-whatsapp:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(37, 211, 102, 0.6); }
-        
-        .float-top-center {
-            position: fixed; bottom: -60px; left: 50%; transform: translateX(-50%);
-            background-color: rgba(51, 51, 51, 0.85); color: #fff;
-            padding: 10px 24px; border-radius: 30px; font-size: 14px; font-weight: 600;
-            border: none; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.15);
-            transition: bottom 0.3s ease; z-index: 1999;
-            display: flex; align-items: center; gap: 8px;
-            backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px);
+
+        @keyframes pulse-green {
+            0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.6); }
+            70% { box-shadow: 0 0 0 15px rgba(37, 211, 102, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
         }
-        .float-top-center.show { bottom: 30px; }
+        
+        /* 獨立的回到頂部按鈕 (實心灰色、白色箭頭) */
+        .float-top-circle {
+            position: fixed; 
+            bottom: -60px; 
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px; 
+            height: 50px;
+            background-color: #666666; /* 實心灰色 */
+            border: none;
+            border-radius: 50%; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center;
+            cursor: pointer; 
+            transition: bottom 0.3s ease, background-color 0.3s, transform 0.3s; 
+            z-index: 1999;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15); /* 輕微陰影增加立體感 */
+            padding: 0;
+        }
+        .float-top-circle svg { width: 24px; height: 24px; fill: none; stroke: #ffffff; /* 白色箭頭 */ stroke-width: 4; stroke-linecap: round; stroke-linejoin: round; }
+        .float-top-circle.show { bottom: 30px; }
+        .float-top-circle.hide { bottom: -60px !important; }
+        .float-top-circle:hover { background-color: var(--primary-color); transform: translateX(-50%) translateY(-3px); }
 
         /* 頁尾 */
         footer { background: #222; color: #aaa; padding: 30px 0; text-align: center; font-size: 14px; margin-top: auto; }
@@ -139,9 +160,17 @@
             .grid-container { grid-template-columns: 1fr; gap: 20px; }
             .category-card { height: 42vh; }
             .photo-card img { height: 40vh; }
+            
             .floating-action-group { right: 15px; bottom: 20px; }
-            .float-whatsapp { padding: 8px 16px; font-size: 14px; gap: 6px; }
-            .float-whatsapp svg { width: 20px; height: 20px; }
+            .float-whatsapp { 
+                padding: 12px 20px; 
+                font-size: 15px;    
+                gap: 8px; 
+            }
+            .float-whatsapp svg { width: 22px; height: 22px; }
+
+            /* 手機版回到頂部按鈕位置調整 (向上移避免與 WhatsApp 重疊) */
+            .float-top-circle.show { bottom: 60px; }
         }
     </style>
 </head>
@@ -149,7 +178,7 @@
 
     <header>
         <div class="container header-content">
-            <a href="home" class="logo">菁華工程 CHING WAH</a>
+            <a href="home.html" class="logo">菁華工程 CHING WAH</a>
             <button class="hamburger" onclick="toggleMenu()">
                 <span></span><span></span><span></span>
             </button>
@@ -157,12 +186,12 @@
     </header>
 
     <div class="mobile-drawer" id="mobileDrawer">
-        <a href="home" onclick="toggleMenu()">首頁</a>
-        <a href="home#portfolio" onclick="toggleMenu()">焦點項目</a>
-        <a href="home#scope" onclick="toggleMenu()">業務範疇</a>
-        <a href="projects" onclick="toggleMenu()">過往項目</a>
+        <a href="home.html" onclick="toggleMenu()">首頁</a>
+        <a href="home.html#portfolio" onclick="toggleMenu()">焦點項目</a>
+        <a href="home.html#scope" onclick="toggleMenu()">業務範疇</a>
+        <a href="projects.html" onclick="toggleMenu()">過往項目</a>
         <div class="drawer-actions" style="margin-top: 20px;">
-            <a href="home#contact" class="btn-primary" style="background-color: var(--primary-color); color:#fff; padding:10px 20px; border-radius:4px; text-align:center;" onclick="toggleMenu()">立即獲取報價</a>
+            <a href="home.html#contact" class="btn-primary" style="background-color: var(--primary-color); color:#fff; padding:10px 20px; border-radius:4px; text-align:center;" onclick="toggleMenu()">立即獲取報價</a>
         </div>
     </div>
     <div class="overlay" id="overlay" onclick="toggleMenu()"></div>
@@ -170,7 +199,7 @@
     <div class="nav-header">
         <div class="container">
             <div class="breadcrumb-nav">
-                <a href="home" class="bc-link">首頁</a>
+                <a href="home.html" class="bc-link">首頁</a>
                 <span class="bc-sep">/</span>
                 <a href="#" id="bc-cat-link" class="bc-link bc-current" onclick="showCategoryView(); return false;">過往項目</a>
                 <span id="bc-sep-2" class="bc-sep" style="display:none;">/</span>
@@ -202,7 +231,11 @@
             <span>馬上聯絡我們</span>
         </a>
     </div>
-    <button id="backToTop" class="float-top-center">↑ 回到頂部</button>
+    
+    <!-- 替換成新的實心圓形回到頂部按鈕 -->
+    <button id="backToTop" class="float-top-circle" title="回到頂部">
+        <svg viewBox="0 0 24 24"><path d="M4 15l8-8 8 8"/></svg>
+    </button>
 
     <script>
         function toggleMenu() {
@@ -211,10 +244,23 @@
         }
 
         const backToTopBtn = document.getElementById('backToTop');
+        
         window.onscroll = function() {
-            if (window.pageYOffset > 300) backToTopBtn.classList.add('show');
-            else backToTopBtn.classList.remove('show');
+            if (window.pageYOffset > 300) {
+                backToTopBtn.classList.add('show');
+            } else {
+                backToTopBtn.classList.remove('show');
+            }
+
+            // 判斷是否捲動到底部 (兼容手機版與電腦版)，捲到底部時隱藏回到頂部按鈕
+            const isAtBottom = (window.innerHeight + window.scrollY) >= document.documentElement.scrollHeight - 100; 
+            if (isAtBottom) {
+                backToTopBtn.classList.add('hide');
+            } else {
+                backToTopBtn.classList.remove('hide');
+            }
         };
+        
         backToTopBtn.onclick = function() { window.scrollTo({ top: 0, behavior: 'smooth' }); };
 
         // 新增：處理圖片載入失敗的自動切換副檔名邏輯
