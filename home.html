@@ -82,7 +82,7 @@
         .float-top-circle:hover { background-color: var(--primary-color); transform: translateX(-50%) translateY(-3px); }
 
         /* 內容區塊樣式 */
-        .hero { background: linear-gradient(rgba(0,0,0,0.75), rgba(0,0,0,0.75)), url('https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1920&q=80') center/cover; color: #fff; text-align: center; padding: 120px 20px; }
+        .hero { background: linear-gradient(rgba(0,0,0,0.75), rgba(0,0,0,0.75)), url('https://images.unsplash.com/photo-1774953037913-af0cf688491a?q=80&w=3266&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D') center/cover; color: #fff; text-align: center; min-height: 550px; padding: 70px 20px 0px; }
         .hero h1 { font-size: 48px; margin-bottom: 20px; }
         .hero p { font-size: 20px; margin-bottom: 30px; max-width: 800px; margin-left: auto; margin-right: auto; line-height: 1.8; }
         
@@ -162,10 +162,15 @@
             position: relative;
             z-index: 2000;
             letter-spacing: 0.5px;
+            /* 👇 新增下面這三行，強制它垂直排列並置中 */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px; /* 這裡控制文字和倒數計時之間的上下距離 */
         }
         .promo-banner .highlight-text { color: #f39c12; font-weight: bold; margin-right: 5px; }
         .promo-banner #countdown { 
-            font-family: monospace; font-size: 1.1em; margin-left: 10px; 
+            font-family: monospace; font-size: 1.1em; 
             background: rgba(255,255,255,0.15); padding: 3px 8px; border-radius: 4px; color: #f39c12; font-weight: bold;
         }
         
@@ -178,7 +183,7 @@
             padding: 15px 25px;
             border-radius: 12px;
             font-size: 16px;
-            margin-bottom: 30px;
+            margin-bottom: 10px;
             box-shadow: 0 4px 15px rgba(243, 156, 18, 0.4);
             animation: pulse-orange 2s infinite;
             text-align: left;
@@ -283,7 +288,7 @@
     <div class="promo-banner">
         <span>
             <span class="highlight-text">【終生 9 折優惠】</span>
-            凡於本週內透過 WhatsApp 聯繫並確認首單合作項目的前 3 間公司，未來所有工程合約均享終生 9 折優惠。
+            於X月X日前確認首單合作項目可享終生 9 折優惠，<br>名額只限3個，馬上聯絡我們！
         </span>
         <span id="countdown">載入中...</span>
     </div>
